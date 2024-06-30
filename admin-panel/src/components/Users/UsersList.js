@@ -115,7 +115,7 @@ const UsersList = () => {
               <td>{user.email}</td>
               <td>
                 <button className="btn btn-warning btn-sm mr-2" onClick={() => handleEdit(user)}>Edit</button>
-                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(user.id)}>Delete</button>
+                {/* <button className="btn btn-danger btn-sm" onClick={() => handleDelete(user.id)}>Delete</button> */}
               </td>
             </tr>
           ))}

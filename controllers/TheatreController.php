@@ -35,10 +35,10 @@ class TheatreController {
         echo json_encode($theatre);
     }
 
-    public function create() {
-        $name = $_POST['name'];
-        $address = $_POST['address'];
-        $capacity = $_POST['capacity'];
+    public function create($data) {
+        $name = $data['name'];
+        $address = $data['address'];
+        $capacity = $data['capacity'];
         $query = "INSERT INTO theaters (name, address, capacity) VALUES (?, ?, ?)";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("ssi", $name, $address, $capacity);
@@ -49,11 +49,10 @@ class TheatreController {
         }
     }
 
-    public function update($id) {
-        echo json_encode($_POST);exit;
-        $name = $_POST['name'];
-        $address = $_POST['address'];
-        $capacity = $_POST['capacity'];
+    public function update($id, $data) {
+        $name = $data['name'];
+        $address = $data['address'];
+        $capacity = $data['capacity'];
         $query = "UPDATE theaters SET name = ?, address = ?, capacity = ? WHERE id = ?";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("ssii", $name, $address, $capacity, $id);
@@ -65,14 +64,36 @@ class TheatreController {
     }
 
     public function delete($id) {
-        $query = "DELETE FROM theaters WHERE id = ?";
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param("i", $id);
-        if ($stmt->execute()) {
-            echo json_encode(['message' => 'Theatre deleted successfully']);
-        } else {
-            echo json_encode(['error' => 'Error deleting theatre']);
+        // Start a transaction
+        $this->db->begin_transaction();
+    
+        try {
+            // First, delete related rows in the seats table
+            $querySeats = "DELETE FROM seats WHERE theater_id = ?";
+            $stmtSeats = $this->db->prepare($querySeats);
+            $stmtSeats->bind_param("i", $id);
+            if (!$stmtSeats->execute()) {
+                throw new Exception('Error deleting related seats');
+            }
+    
+            // Then, delete the row in the theaters table
+            $queryTheater = "DELETE FROM theaters WHERE id = ?";
+            $stmtTheater = $this->db->prepare($queryTheater);
+            $stmtTheater->bind_param("i", $id);
+            if (!$stmtTheater->execute()) {
+                throw new Exception('Error deleting theater');
+            }
+    
+            // Commit the transaction
+            $this->db->commit();
+    
+            echo json_encode(['message' => 'Theater deleted successfully']);
+        } catch (Exception $e) {
+            // Rollback the transaction if something failed
+            $this->db->rollback();
+            echo json_encode(['error' => $e->getMessage()]);
         }
     }
+    
 }
 ?>

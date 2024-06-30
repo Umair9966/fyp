@@ -8,24 +8,35 @@ class Booking {
     }
 
     public function all() {
-        $query = "SELECT * FROM booking";
+        $query = "
+            SELECT 
+                b.id, 
+                b.customer_id, 
+                u.username as customer_name, 
+                b.show_id, 
+                m.title as movie_name, 
+                b.number_of_tickets, 
+                b.seat_details, 
+                b.booking_date 
+            FROM booking b
+            JOIN users u ON b.customer_id = u.id
+            JOIN movies m ON b.show_id = m.id
+        ";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         $result = $stmt->get_result();
         $booking = array();
-
+    
         while ($row = $result->fetch_assoc()) {
             $booking[] = $row;
         }
-
-        $response = $booking;
-        return $response;
+    
+        header('Content-Type: application/json');
+        return $booking;
     }
+    
 
     public function create($data) {
-
-        $data = $data;
-    
         // Extract data from POST request
         $customer_id = $data['customer_id'];
         $show_id = $data['show_id'];

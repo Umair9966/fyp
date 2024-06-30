@@ -157,8 +157,8 @@ const MoviesList = () => {
               <td>{theaters.find(theater => theater.id === movie.theater_id)?.name || ''}</td>
               <td>
                 <button className="btn btn-warning btn-sm mr-2" onClick={() => handleEdit(movie)}>Edit</button>
-                <button className="btn btn-success btn-sm mr-2" onClick={() => handleCopy(movie)}>Copy</button>
-                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(movie.id)}>Delete</button>
+                {/* <button className="btn btn-success btn-sm mr-2" onClick={() => handleCopy(movie)}>Copy</button> */}
+                {/* <button className="btn btn-danger btn-sm" onClick={() => handleDelete(movie.id)}>Delete</button> */}
               </td>
             </tr>
           ))}

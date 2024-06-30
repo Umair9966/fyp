@@ -104,7 +104,7 @@ const TheatresList = () => {
               <td>{theatre.capacity}</td>
               <td>
                 <button className="btn btn-primary btn-sm" onClick={() => handleEdit(theatre)}>Edit</button>
-                <button className="btn btn-danger btn-sm ml-2" onClick={() => handleDelete(theatre.id)}>Delete</button>
+                {/* <button className="btn btn-danger btn-sm ml-2" onClick={() => handleDelete(theatre.id)}>Delete</button> */}
               </td>
             </tr>
           ))}
