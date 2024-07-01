@@ -1,9 +1,17 @@
-/* src/Header.css */
 .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
     background-color: yellow;
-    color: black;
-    padding: 20px;
-    text-align: center;
+    color: white;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
 }
 
 .header h1 {
@@ -12,28 +20,16 @@
     color: black;
 }
 
-nav {
-    margin-top: 10px;
-}
-
-.nav-links {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-.nav-links li {
-    display: inline;
-}
-
-.nav-links a {
-    color: black;
+.login-button {
+    background-color: #555;
+    color: white;
+    padding: 10px 20px;
     text-decoration: none;
-    font-size: 1.2em;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
 }
 
-.nav-links a:hover {
-    text-decoration: underline;
+.login-button:hover {
+    background-color: #777;
 }

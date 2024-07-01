@@ -14,3 +14,12 @@ export const clearUserInfo = () => {
 export const isUserLoggedIn = () => {
     return getUserInfo() !== null
 }
+
+export const setUserRewardPoints = (points) => {
+    sessionStorage.setItem('userRewardPoints', JSON.stringify(points));
+};
+
+export const getUserRewardPoints = () => {
+    const rewards = sessionStorage.getItem('userRewardPoints');
+    return rewards ? rewards : '0';
+};

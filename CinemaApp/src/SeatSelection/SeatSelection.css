@@ -20,6 +20,13 @@ h1, h2, p {
 .seats-table {
     margin-bottom: 20px;
 }
+.reward-input {
+    margin-left: 10px;
+    padding: 5px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
 
 .seats-row {
     display: flex;
@@ -92,6 +99,7 @@ h1, h2, p {
     font-size: 16px;
     transition: background-color 0.3s;
     width: 30%;
+    margin-top:10px
 }
 
 

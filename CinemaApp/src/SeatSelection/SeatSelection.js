@@ -4,6 +4,7 @@ import './SeatSelection.css';
 import {useLocation, useNavigate} from 'react-router-dom';
 import Header from "../Header/Header";
 import {confirmBooking} from "./SeatSelectionNetworkCall";
+import {getUserRewardPoints} from "../SessionStorage/SessionStorage";
 
 const SeatSelection = () => {
     const location = useLocation();
@@ -13,6 +14,8 @@ const SeatSelection = () => {
 
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [alreadySelectedSeats, setAlreadySelectedSeats] = useState([]);
+    const [rewardPoints, setRewardPoints] = useState(null);
+    ;
 
     const handleSeatClick = (row, col) => {
         const seat = `${String.fromCharCode(65 + row)}${col + 1}`;
@@ -37,13 +40,22 @@ const SeatSelection = () => {
     };
 
     const handleConfirmBooking = async () => {
+
+        if (Number(rewardPoints) > Number(getUserRewardPoints())) {
+            setRewardPoints(null)
+            alert('You dont have enough reward points to redeem ')
+            return
+        }
+
         const data = {
             movieId: selectedMovie.id,
             numberOfTickets: ticketCount + "",
             seatsBooked: selectedSeats.join(','),
             bookingDate: new Date().toDateString(),
             totalAmount: totalAmount + '',
-            theaterId: theater.id
+            theaterId: theater.id,
+            used_rewards_points: rewardPoints !== null ? rewardPoints : 0,
+            reward_redeemed: rewardPoints !== null ? 1 : 0
         }
 
         const response = await confirmBooking(data)
@@ -56,6 +68,11 @@ const SeatSelection = () => {
             });
         }
 
+    };
+    const handleRewardPointsChange = (event) => {
+        // Handle reward points input change logic here
+        console.log("Reward Points:", event.target.value);
+        setRewardPoints(event.target.value);
     };
 
     useEffect(() => {
@@ -93,6 +110,19 @@ const SeatSelection = () => {
                     <h2>Selected Seats:</h2>
                     <p>{selectedSeats.join(', ')}</p>
                 </div>
+
+
+                <div>
+                    <h2>Enter Reward Points to redeem</h2>
+                    <input
+                        type="text"
+                        className="reward-input"
+                        placeholder="Enter points"
+                        onChange={handleRewardPointsChange}
+                    />
+
+                </div>
+
 
                 <button className="confirm-button" onClick={handleConfirmBooking}
                         disabled={selectedSeats.length < ticketCount}>Confirm Booking

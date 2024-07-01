@@ -2,8 +2,8 @@
 import React, {useEffect, useState} from 'react';
 import './Dashboard.css';
 import Header from "../Header/Header";
-import {GetDashboardApiData} from "./DashboardNetworkCall";
-import {isUserLoggedIn} from "../SessionStorage/SessionStorage";
+import {GetDashboardApiData, GetUserRewardsPointsApi} from "./DashboardNetworkCall";
+import {isUserLoggedIn, setUserRewardPoints} from "../SessionStorage/SessionStorage";
 import {useLocation, useNavigate} from "react-router-dom";
 
 const moviesData = [
@@ -312,7 +312,6 @@ const Dashboard = () => {
     const location = useLocation();
 
 
-
     const [movies, setMovies] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -338,18 +337,29 @@ const Dashboard = () => {
     const getDashboardData = async () => {
 
         const dashboardResponse = await GetDashboardApiData()
-        setMovies(moviesData)
+        // setMovies(moviesData)
         if (dashboardResponse) {
-            // setMovies(dashboardResponse)
+            setMovies(dashboardResponse)
         } else {
             alert("error while getting dashboard data")
         }
     }
 
 
+    const getUserRewardPointsFromServer = async () => {
+
+        const userRewards = await GetUserRewardsPointsApi()
+        if (userRewards) {
+            setUserRewardPoints(userRewards.reward_points)
+        }
+    }
+
+
     useEffect(() => {
         getDashboardData()
+        getUserRewardPointsFromServer()
     }, []);
+
 
     return (
         <div>

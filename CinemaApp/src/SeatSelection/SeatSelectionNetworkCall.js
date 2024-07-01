@@ -15,8 +15,9 @@ export const confirmBooking = async (paramsData) => {
         data.append('booking_date', paramsData.bookingDate);
         data.append('total_amount', paramsData.totalAmount);
         data.append('theater_id', paramsData.theaterId);
+        data.append('used_rewards_points', paramsData.used_rewards_points);
+        data.append('reward_redeemed', paramsData.reward_redeemed);
 
-        console.log(paramsData)
         const response = await axios.post(`${API_BASE_URL}/add-booking`, data);
         return response.data;
     } catch (error) {
