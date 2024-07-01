@@ -1,0 +1,112 @@
+/* src/SeatSelection.css */
+
+.seat-selection-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2, p {
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.seats-table {
+    margin-bottom: 20px;
+}
+
+.seats-row {
+    display: flex;
+    justify-content: center;
+}
+
+.seat-label, .seat {
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.seat-label {
+    background-color: transparent;
+    color: #fff;
+}
+
+.seat {
+    cursor: pointer;
+    border-radius: 6px;
+    background-color: #444;
+    transition: background-color 0.3s, transform 0.3s;
+    color: #fff;
+}
+
+.seat:hover {
+    background-color: #666;
+    transform: scale(1.1);
+}
+
+.seat.selected {
+    background-color: #ffeb3b;
+    color: black;
+}
+
+.seat.alreadyselected {
+    background-color: #f40012;
+    color: black;
+}
+
+.selected-seats-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.screen {
+    width: 60%;
+    height: 30px;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    line-height: 30px;
+    margin: 20px 0;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+}
+
+.confirm-button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    width: 30%;
+}
+
+
+.confirm-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+
+.confirm-button:hover {
+    background-color: #45a049;
+}

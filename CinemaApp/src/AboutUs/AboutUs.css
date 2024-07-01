@@ -1,0 +1,41 @@
+.about-us {
+    background-color: black;
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    max-width: 800px;
+    padding: 20px;
+    text-align: center;
+}
+
+h1, h2 {
+    color: #ffcc00;
+}
+
+p {
+    margin: 10px 0;
+    line-height: 1.6;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    margin: 5px 0;
+    padding-left: 20px;
+    position: relative;
+}
+
+ul li::before {
+    content: '✔';
+    color: #ffcc00;
+    position: absolute;
+    left: 0;
+}

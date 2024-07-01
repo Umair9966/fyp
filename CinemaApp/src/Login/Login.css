@@ -1,0 +1,58 @@
+/* src/Login.css */
+.login-container {
+    width: 300px;
+    margin: 100px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #333;
+    color: white;
+}
+
+h2 {
+    text-align: center;
+    color: yellow; /* Adjust the title color */
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: white; /* Adjust label color for readability */
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: yellow; /* Adjust button background color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: darkyellow; /* Adjust hover color if necessary */
+}
+
+p {
+    text-align: center;
+    color: white;
+}
+
+a {
+    margin-top: 5px;
+    color: white; /* Adjust link color */
+}
