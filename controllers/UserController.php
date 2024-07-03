@@ -2,13 +2,9 @@
 <?php
 
 require_once 'controllers/TokenMiddleware.php';
+require_once 'controllers/EmailController.php';
 
-require 'config/PHPMailer/src/Exception.php';
-require 'config/PHPMailer/src/PHPMailer.php';
-require 'config/PHPMailer/src/SMTP.php';
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 
 class UserController {
     private $db;
@@ -148,9 +144,17 @@ class UserController {
         $query = "INSERT INTO users (email, password) VALUES (?, ?)";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("ss", $email, md5($password));
+        
         if ($stmt->execute()) {
             // Get the last inserted ID
             $last_id = $this->db->insert_id;
+            
+            // Add reward points for the new user
+            $rewardQuery = "INSERT INTO rewards (user_id, reward_points) VALUES (?, ?)";
+            $rewardStmt = $this->db->prepare($rewardQuery);
+            $reward_points = 100;
+            $rewardStmt->bind_param("ii", $last_id, $reward_points);
+            $rewardStmt->execute();
             
             // Retrieve the last inserted data
             $sql = "SELECT * FROM users WHERE id = ?";
@@ -159,12 +163,13 @@ class UserController {
             $stmt->execute();
             $result = $stmt->get_result();
             $last_data = $result->fetch_assoc();
-
+    
             echo json_encode(['message' => 'User registered successfully', 'user' => $last_data]);
         } else {
             echo json_encode(['error' => 'Error registering user']);
         }
     }
+    
 
     public function forgotPassword() {
         $email = $_POST['email'];
@@ -189,7 +194,41 @@ class UserController {
 
                 if ($stmt->execute()) {
                     // Send the new password to the user's email address
-                    if ($this->sendNewPasswordEmail($email, $newPassword)) {
+                    $subject = 'Your New Password';
+                    $body = "
+                    <html>
+                    <head>
+                        <title>Your New Password</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; }
+                            .container { padding: 20px; }
+                            .header { background-color: #4CAF50; color: white; padding: 10px; text-align: center; }
+                            .content { padding: 20px; }
+                            .footer { background-color: #f1f1f1; padding: 10px; text-align: center; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class='container'>
+                            <div class='header'>
+                                <h1>Password Reset</h1>
+                            </div>
+                            <div class='content'>
+                                <p>Dear User,</p>
+                                <p>Your password has been reset. Here is your new password:</p>
+                                <p><strong>$newPassword</strong></p>
+                                <p>Please change your password after logging in.</p>
+                                <p>Thank you!</p>
+                            </div>
+                            <div class='footer'>
+                                <p>CineTech Cinema, All Rights Reserved.</p>
+                            </div>
+                        </div>
+                    </body>
+                    </html>
+                    ";
+                    $altBody = "Dear User,\n\nYour password has been reset. Here is your new password:\n\n$newPassword\n\nPlease change your password after logging in.\n\nThank you!\n\nCineTech Cinema, All Rights Reserved.";
+
+                    if (EmailController::sendEmail($email, 'User', $subject, $body, $altBody)) {
                         echo "A new password has been sent to your email address.";
                     } else {
                         echo "Failed to send the new password email.";
@@ -215,36 +254,6 @@ class UserController {
         }
 
         return $randomPassword;
-    }
-
-    private function sendNewPasswordEmail($email, $newPassword) {
-        $mail = new PHPMailer(true);
-        // try {
-            // Server settings
-            $mail->isSMTP();
-            $mail->Host = 'smtp.sendgrid.net';
-            $mail->SMTPAuth = true;
-            $mail->Username = 'apikey'; // SendGrid SMTP username is always 'apikey'
-            $mail->Password = 'your_sendgrid_api_key'; // Replace with your SendGrid API key
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 587;
-
-            // Recipients
-            $mail->setFrom('no-reply@sendgrid.com', 'CineTech Cinema');
-            $mail->addAddress($email);
-
-            // Content
-            $mail->isHTML(true);
-            $mail->Subject = 'Your New Password';
-            $mail->Body    = 'Your new password is: ' . $newPassword;
-
-            $mail->send();
-            echo json_encode($mail);
-            return true;
-        // } catch (Exception $e) {
-        //     error_log('Mailer Error: ' . $mail->ErrorInfo);
-        //     return false;
-        // }
     }
 }
 ?>

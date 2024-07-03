@@ -86,7 +86,7 @@ class MovieController {
         echo json_encode($data);
     }
 
-    public function getRandomValue($min = 1, $max = 10) {
+    public function getRandomValue($min = 1, $max = 9) {
         $integerPart = mt_rand($min, $max);
         $decimalPart = mt_rand(0, 99) / 100;
         return $integerPart + $decimalPart;

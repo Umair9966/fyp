@@ -6,7 +6,7 @@ const Sidebar = () => {
     return (
         <div className="sidebar">
             <h2>Admin Panel</h2>
-            <Link to="/dashboard"><i className="icon">🏠</i> <span>Dashboard</span></Link>
+            <Link to="/"><i className="icon">🏠</i> <span>Dashboard</span></Link>
             <Link to="/users"><i className="icon">👥</i> <span>Users</span></Link>
             <Link to="/movies"><i className="icon">🎬</i> <span>Movies</span></Link>
             <Link to="/theatres"><i className="icon">🎭</i> <span>Theatres</span></Link>

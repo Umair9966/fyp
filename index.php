@@ -34,24 +34,29 @@ if ($conn->connect_error) {
 $router = require 'config/routes.php';
 require_once 'models/User.php';
 require_once 'models/Booking.php';
+require_once 'models/Reward.php';
 require_once 'controllers/UserController.php';
 require_once 'controllers/BookingController.php';
 require_once 'controllers/MovieController.php';
 require_once 'controllers/TheatreController.php';
+require_once 'controllers/RewardController.php';
 
 // Create instances of models and controllers
 $user = new User($conn);
 $booking = new Booking($conn);
+$reward = new Reward($conn);
 $userController = new UserController($conn);
 $bookingController = new BookingController($booking);
 $movieController = new MovieController($conn);
 $theatreController = new TheatreController($conn);
+$rewardController = new RewardController($reward);
 
 $controllerMappings = [
     'UserController' => $userController,
     'BookingController' => $bookingController,
     'MovieController' => $movieController,
     'TheatreController' => $theatreController,
+    'RewardController' => $rewardController,
 ];
 
 // Match the current request

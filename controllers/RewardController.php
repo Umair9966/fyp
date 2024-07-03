@@ -7,14 +7,8 @@ class RewardController {
     }
 
     public function getRewards($user_id) {
-        $rewards = $this->rewardModel->getRewards();
-        $user_rewards = array();
-        foreach ($rewards as $reward) {
-            if ($reward['user_id'] == $user_id) {
-                $user_rewards[] = $reward;
-            }
-        }
-        return $user_rewards;
+        $rewards = $this->rewardModel->getRewardById($user_id);
+        echo json_encode($rewards);
     }
 
     public function getRewardPoints($user_id) {

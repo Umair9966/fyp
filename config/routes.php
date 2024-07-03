@@ -26,11 +26,13 @@ $router->map('GET', '/bookings', 'BookingController@index');
 $router->map('GET', '/bookings/[i:id]', 'BookingController@show');
 $router->map('POST', '/add-booking', 'BookingController@create');
 $router->map('PUT', '/bookings/[i:id]', 'BookingController@update');
-$router->map('DELETE', '/bookings/[i:id]', 'BookingController@delete');
+$router->map('DELETE', '/bookings/[i:id]', 'BookingController@destroy');
 $router->map('GET', '/theatres', 'TheatreController@index');
 $router->map('GET', '/theatres/[i:id]', 'TheatreController@show');
 $router->map('POST', '/theatres', 'TheatreController@create');
 $router->map('PUT', '/theatres/[i:id]', 'TheatreController@update');
 $router->map('DELETE', '/theatres/[i:id]', 'TheatreController@delete');
+$router->map('GET', '/rewards/[i:id]', 'RewardController@getRewards');
+$router->map('POST', '/rewards/[i:id]', 'RewardController@show');
 
 return $router;

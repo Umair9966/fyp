@@ -1,5 +1,5 @@
 <?php
-class RewardModel {
+class Reward {
     private $conn;
 
     public function __construct($conn) {
@@ -10,20 +10,13 @@ class RewardModel {
         $sql = "SELECT * FROM rewards";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
-        $stmt->bind_result($id, $user_id, $reward_points);
-        $rewards = array();
-        while ($stmt->fetch()) {
-            $rewards[] = array(
-                'id' => $id,
-                'user_id' => $user_id,
-                'reward_points' => $reward_points
-            );
-        }
-        return $rewards;
+        $result = $stmt->get_result();
+        $reward = $result->fetch_assoc();
+        return $reward;
     }
 
     public function getRewardById($id) {
-        $sql = "SELECT * FROM rewards WHERE id = ?";
+        $sql = "SELECT * FROM rewards WHERE user_id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -66,6 +59,33 @@ class RewardModel {
             return true;
         } else {
             throw new Exception("Error deleting reward: " . $stmt->error);
+        }
+    }
+
+    public function rewardRedeemed($user_id, $pointsChange) {
+        // Fetch current reward points
+        $query = "SELECT reward_points FROM rewards WHERE user_id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $currentPoints = $row['reward_points'];
+            $newPoints = $currentPoints + $pointsChange;
+
+            // Update reward points
+            $update_query = "UPDATE rewards SET reward_points = ? WHERE user_id = ?";
+            $update_stmt = $this->conn->prepare($update_query);
+            $update_stmt->bind_param("ii", $newPoints, $user_id);
+            $update_stmt->execute();
+        } else {
+            // Insert new record if user doesn't have rewards entry
+            $insert_query = "INSERT INTO rewards (user_id, reward_points) VALUES (?, ?)";
+            $insert_stmt = $this->conn->prepare($insert_query);
+            $insert_stmt->bind_param("ii", $user_id, $pointsChange);
+            $insert_stmt->execute();
         }
     }
 }

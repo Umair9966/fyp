@@ -14,8 +14,10 @@ const ForgotPassword = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const response = await ForgotPasswordApiCall(email);
+        const loginData = {
+            email: email
+        }
+        const response = await ForgotPasswordApiCall(loginData);
 
         if (response) {
             setShowDisclaimer(true)
